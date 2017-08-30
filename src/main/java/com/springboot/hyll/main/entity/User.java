@@ -1,5 +1,7 @@
 package com.springboot.hyll.main.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.springboot.hyll.sys.entity.OrgGroup;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -14,27 +16,37 @@ import java.util.List;
  * Created by Administrator on 2017/8/3 0003.
  */
 @Entity
-public class User implements UserDetails,Serializable {
+public class User implements UserDetails {
 
     private static final long serialVersionUID = 3336609444741094787L;
 
     @Id //2
     @GeneratedValue //3
     private Integer id;
-
+    // 名字
     private String userName;
-
+    // 账号
     private String login;
-
+    // 密码
     private String password;
-
+    // 年龄
     private Integer age;
-
+    // 地址
     private String address;
+    // 职位名称
+    private String job;
 
-    @ManyToMany(cascade = {CascadeType.REMOVE},fetch = FetchType.EAGER)
+    @ManyToMany(cascade = {CascadeType.ALL},fetch = FetchType.EAGER)
     @JoinTable(name = "user_associate_role", joinColumns = { @JoinColumn(name ="user_id" )}, inverseJoinColumns = { @JoinColumn(name = "role_id") })
     private List<UserRole> roles;
+
+    public String getJob() {
+        return job;
+    }
+
+    public void setJob(String job) {
+        this.job = job;
+    }
 
     public List<UserRole> getRoles() {
         return roles;
@@ -127,4 +139,6 @@ public class User implements UserDetails,Serializable {
     public void setAddress(String address) {
         this.address = address;
     }
+
+
 }
