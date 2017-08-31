@@ -4,9 +4,11 @@ import com.springboot.hyll.config.common.base.entity.QueryBase;
 import com.springboot.hyll.config.common.constant.SystemStaticConst;
 import com.springboot.hyll.main.entity.User;
 import com.springboot.hyll.main.service.UserService;
+import com.springboot.hyll.sys.entity.OrgGroup;
 import com.springboot.hyll.util.redis.RedisCache;
 import com.springboot.hyll.util.user.UserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -91,4 +93,15 @@ public class UserController {
         return user;
     }
 
+    @RequestMapping(value = "/getGroupUserList",
+            method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public Page<User> getGroupUserList(){
+        OrgGroup og = new OrgGroup();
+        og.setGroupId(2l);
+        User user = new User();
+        user.setOrgGroup(og);
+        Page<User> page = userService.findByAuto(user);
+        return page;
+    }
 }

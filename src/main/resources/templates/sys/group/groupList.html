@@ -3,7 +3,7 @@
 <head th:include="include/includebase"></head>
 <body>
 <div id="content" class="row-fluid">
-    <div class="col-md-3 " style="margin-top: 10px;border-radius:5px;border:1px solid #F00">
+    <div class="col-md-3 " style="margin-top: 10px;border-radius:5px;border:1px solid #000000">
         <ul id="tree" class="ztree" style="width:560px; overflow:auto;"></ul>
     </div>
     <div class="col-md-9">
@@ -93,6 +93,8 @@
                 enable:true,
                 idKey: "node",
                 pIdKey: "parentNode",
+               // idKey: "id",
+                //pIdKey: "pId",
                 rootPId: "0"
             }
         },
@@ -103,7 +105,7 @@
                     zTree.expandNode(treeNode);
                     return false;
                 } else {
-                    alert(treeNode.groupName);
+                    alert(treeNode.name);
                     //demoIframe.attr('src',treeNode.file + '.html');
                     return true;
                 }
@@ -112,7 +114,7 @@
     };
 
     var zNodes =[
-        {id:1, pId:0, name:"[core] 基本功能 演示", open:true},
+        {id:1, pId:0, name:"[core] 基本功能 演示"},
         {id:101, pId:1, name:"最简单的树 --  标准 JSON 数据", file:"core/standardData"},
         {id:102, pId:1, name:"最简单的树 --  简单 JSON 数据", file:"core/simpleData"},
         {id:103, pId:1, name:"不显示 连接线", file:"core/noline"},
@@ -202,7 +204,7 @@
     $(function() {
         $.post("/group/loadGroupTree",function(info){
             var t = $("#tree");
-            t = $.fn.zTree.init(t, setting, info.data);
+            t = $.fn.zTree.init(t, setting,info.data);
         })
         initTable();
         $('#group-user-table').bootstrapTable('hideColumn', 'id');

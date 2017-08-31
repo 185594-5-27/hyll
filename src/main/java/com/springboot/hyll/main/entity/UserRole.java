@@ -4,7 +4,6 @@ import com.springboot.hyll.config.common.base.entity.QueryBase;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.List;
 
 /**
  * Created by Administrator on 2017/8/4 0004.

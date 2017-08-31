@@ -36,9 +36,21 @@ public class User implements UserDetails {
     // 职位名称
     private String job;
 
+    @ManyToOne(cascade = {CascadeType.MERGE,CascadeType.REFRESH }, optional = true)
+    @JoinColumn(name="group_id")
+    private OrgGroup orgGroup;
+
     @ManyToMany(cascade = {CascadeType.ALL},fetch = FetchType.EAGER)
     @JoinTable(name = "user_associate_role", joinColumns = { @JoinColumn(name ="user_id" )}, inverseJoinColumns = { @JoinColumn(name = "role_id") })
     private List<UserRole> roles;
+
+    public OrgGroup getOrgGroup() {
+        return orgGroup;
+    }
+
+    public void setOrgGroup(OrgGroup orgGroup) {
+        this.orgGroup = orgGroup;
+    }
 
     public String getJob() {
         return job;
