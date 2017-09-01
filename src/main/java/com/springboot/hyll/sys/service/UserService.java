@@ -2,8 +2,8 @@ package com.springboot.hyll.sys.service;
 
 import com.springboot.hyll.config.common.base.service.BaseService;
 import com.springboot.hyll.config.customrepository.CustomRepository;
-import com.springboot.hyll.sys.entity.UserRole;
-import com.springboot.hyll.sys.dao.UserRoleRepository;
+import com.springboot.hyll.sys.dao.UserRepository;
+import com.springboot.hyll.sys.entity.User;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -12,17 +12,17 @@ import javax.inject.Inject;
 /*
 * 类描述：
 * @auther linzf
-* @create 2017/8/24 0024 
+* @create 2017/9/1 0001 
 */
 @Service
 @Transactional(rollbackFor={IllegalArgumentException.class})
-public class UserRoleService extends BaseService<UserRole> {
+public class UserService extends BaseService<User> {
 
     @Inject
-    private UserRoleRepository userRoleRepository;
+    private UserRepository userRepository;
 
     @Override
-    protected CustomRepository<UserRole, Long> getRepository() {
-        return userRoleRepository;
+    protected CustomRepository<User, Long> getRepository() {
+        return userRepository;
     }
 }

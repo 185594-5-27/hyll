@@ -1,13 +1,11 @@
-package com.springboot.hyll.main.entity;
+package com.springboot.hyll.sys.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.springboot.hyll.sys.entity.OrgGroup;
+import com.springboot.hyll.config.common.base.entity.QueryBase;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -16,7 +14,7 @@ import java.util.List;
  * Created by Administrator on 2017/8/3 0003.
  */
 @Entity
-public class User implements UserDetails {
+public class User extends QueryBase implements UserDetails {
 
     private static final long serialVersionUID = 3336609444741094787L;
 

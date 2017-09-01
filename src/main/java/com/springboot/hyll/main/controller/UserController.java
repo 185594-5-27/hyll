@@ -2,7 +2,7 @@ package com.springboot.hyll.main.controller;
 
 import com.springboot.hyll.config.common.base.entity.QueryBase;
 import com.springboot.hyll.config.common.constant.SystemStaticConst;
-import com.springboot.hyll.main.entity.User;
+import com.springboot.hyll.sys.entity.User;
 import com.springboot.hyll.main.service.UserService;
 import com.springboot.hyll.sys.entity.OrgGroup;
 import com.springboot.hyll.util.redis.RedisCache;

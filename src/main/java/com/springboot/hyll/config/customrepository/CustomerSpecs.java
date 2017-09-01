@@ -42,6 +42,16 @@ public class CustomerSpecs {
 										pattern((String) attrValue))); //9
 							}
 						} else {
+							/*
+							Class<T> childType = (Class<T>) attrValue.getClass();
+							EntityType<T> childEntity = entityManager.getMetamodel().entity(childType);
+							System.out.println(example+"--"+(T)attr);
+							for(Attribute<T, ?> childAttr : childEntity.getDeclaredAttributes()){
+								Object childAttrValue = getValue((T)attr, childAttr); //6
+								System.out.println(childAttrValue);
+							}
+							System.out.println("childType:"+childType+"--"+attribute(entity, attr.getName(), attrValue.getClass())+"---"+attrValue+"---"+root.get(attribute(entity, attr.getName(), attrValue.getClass())));
+							*/
 							predicates.add(cb.equal(root.get(attribute(entity, attr.getName(), attrValue.getClass())),
 									attrValue)); //10
 						}

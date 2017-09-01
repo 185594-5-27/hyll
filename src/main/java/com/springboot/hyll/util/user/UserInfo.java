@@ -1,11 +1,10 @@
 package com.springboot.hyll.util.user;
 
-import com.springboot.hyll.main.entity.User;
+import com.springboot.hyll.sys.entity.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 

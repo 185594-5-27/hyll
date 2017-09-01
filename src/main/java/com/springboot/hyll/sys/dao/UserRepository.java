@@ -1,8 +1,7 @@
-package com.springboot.hyll.main.dao;
+package com.springboot.hyll.sys.dao;
 
-import com.springboot.hyll.main.entity.User;
+import com.springboot.hyll.sys.entity.User;
 import com.springboot.hyll.config.customrepository.CustomRepository;
-import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 

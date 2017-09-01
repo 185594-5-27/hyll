@@ -1,11 +1,9 @@
 package com.springboot.hyll.sys.entity;
 
 import com.springboot.hyll.config.common.base.entity.QueryBase;
-import com.springboot.hyll.main.entity.User;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.List;
 
 /*
 * 类描述：组织架构实体类

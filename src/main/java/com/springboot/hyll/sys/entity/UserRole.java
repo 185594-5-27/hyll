@@ -1,4 +1,4 @@
-package com.springboot.hyll.main.entity;
+package com.springboot.hyll.sys.entity;
 
 import com.springboot.hyll.config.common.base.entity.QueryBase;
 

@@ -5,7 +5,10 @@ import com.springboot.hyll.config.common.base.entity.QueryBase;
 import com.springboot.hyll.config.common.base.service.BaseService;
 import com.springboot.hyll.config.common.constant.SystemStaticConst;
 import com.springboot.hyll.sys.entity.OrgGroup;
+import com.springboot.hyll.sys.entity.User;
 import com.springboot.hyll.sys.service.OrgGroupService;
+import com.springboot.hyll.sys.service.UserService;
+import org.springframework.data.domain.Page;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,9 +32,26 @@ public class OrgGroupController extends BaseController<OrgGroup> {
     @Inject
     private OrgGroupService orgGroupService;
 
+    @Inject
+    private UserService userService;
+
     @Override
     protected BaseService<OrgGroup> getService() {
         return orgGroupService;
+    }
+
+    /**
+     * 功能描述：获取组织架构底下的相应的用户
+     * @return
+     */
+    @RequestMapping(value = "/userList",method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public Map<String,Object> userList(User user){
+        Map<String,Object> result = new HashMap<String, Object>();
+        Page<User> page = userService.findByAuto(user);
+        result.put("totalCount",page.getTotalElements());
+        result.put("result",page.getContent());
+        return result;
     }
 
     /**
@@ -48,5 +68,7 @@ public class OrgGroupController extends BaseController<OrgGroup> {
         result.put("data",orgGroupList);
         return result;
     }
+
+
 
 }

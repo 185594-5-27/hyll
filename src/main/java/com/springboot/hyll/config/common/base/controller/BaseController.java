@@ -143,9 +143,9 @@ public abstract class BaseController<T extends QueryBase> {
     @ResponseBody
     public Map<String,Object> list(T entity){
         Map<String,Object> result = new HashMap<String, Object>();
-        Page<T> dictList = getService().findByAuto(entity);
-        result.put("totalCount",dictList.getTotalElements());
-        result.put("result",dictList.getContent());
+        Page<T> baseList = getService().findByAuto(entity);
+        result.put("totalCount",baseList.getTotalElements());
+        result.put("result",baseList.getContent());
         return result;
     }
 

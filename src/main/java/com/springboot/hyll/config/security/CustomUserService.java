@@ -1,7 +1,7 @@
 package com.springboot.hyll.config.security;
 
-import com.springboot.hyll.main.dao.UserRepository;
-import com.springboot.hyll.main.entity.User;
+import com.springboot.hyll.sys.dao.UserRepository;
+import com.springboot.hyll.sys.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
