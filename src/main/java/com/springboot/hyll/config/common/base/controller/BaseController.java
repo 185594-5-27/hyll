@@ -121,12 +121,28 @@ public abstract class BaseController<T extends QueryBase> {
 
     /**
      * 功能描述：实现批量删除数据字典的记录
-     * @param json
+     * @param entity
      * @return
      */
     @RequestMapping(value = "/remove",method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public Map<String,Object> remove(String json){
+    public Map<String,Object> remove(T entity){
+        Map<String,Object> result = new HashMap<String, Object>();
+        getService().remove(entity);
+        result.put(SystemStaticConst.RESULT,SystemStaticConst.SUCCESS);
+        result.put(SystemStaticConst.MSG,"删除数据成功！");
+        return result;
+    }
+
+
+    /**
+     * 功能描述：实现批量删除数据字典的记录
+     * @param json
+     * @return
+     */
+    @RequestMapping(value = "/removeBath",method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public Map<String,Object> removeBath(String json){
         Map<String,Object> result = new HashMap<String, Object>();
         getService().removeBath((List<T>) JsonHelper.toList(json,(Class <T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0]));
         result.put(SystemStaticConst.RESULT,SystemStaticConst.SUCCESS);

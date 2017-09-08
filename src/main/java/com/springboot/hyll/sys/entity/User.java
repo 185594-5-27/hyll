@@ -8,6 +8,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -27,12 +28,20 @@ public class User extends QueryBase implements UserDetails {
     private String login;
     // 密码
     private String password;
-    // 年龄
-    private Integer age;
+    // 省
+    private String province;
+    // 市
+    private String city;
+    // 区
+    private String district;
+    // 街道地址
+    private String streetAddress;
     // 地址
     private String address;
     // 职位名称
     private String job;
+    // 出生日期
+    private Date birthDate;
 
     @ManyToOne(cascade = {CascadeType.MERGE,CascadeType.REFRESH }, optional = true)
     @JoinColumn(name="group_id")
@@ -41,6 +50,46 @@ public class User extends QueryBase implements UserDetails {
     @ManyToMany(cascade = {CascadeType.ALL},fetch = FetchType.EAGER)
     @JoinTable(name = "user_associate_role", joinColumns = { @JoinColumn(name ="user_id" )}, inverseJoinColumns = { @JoinColumn(name = "role_id") })
     private List<UserRole> roles;
+
+    public Date getBirthDate() {
+        return birthDate;
+    }
+
+    public void setBirthDate(Date birthDate) {
+        this.birthDate = birthDate;
+    }
+
+    public String getProvince() {
+        return province;
+    }
+
+    public void setProvince(String province) {
+        this.province = province;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getDistrict() {
+        return district;
+    }
+
+    public void setDistrict(String district) {
+        this.district = district;
+    }
+
+    public String getStreetAddress() {
+        return streetAddress;
+    }
+
+    public void setStreetAddress(String streetAddress) {
+        this.streetAddress = streetAddress;
+    }
 
     public OrgGroup getOrgGroup() {
         return orgGroup;
@@ -124,14 +173,6 @@ public class User extends QueryBase implements UserDetails {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public Integer getAge() {
-        return age;
-    }
-
-    public void setAge(Integer age) {
-        this.age = age;
     }
 
     public Integer getId() {

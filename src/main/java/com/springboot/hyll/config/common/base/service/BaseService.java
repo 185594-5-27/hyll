@@ -25,19 +25,7 @@ public abstract class BaseService<T extends QueryBase> {
      * @return
      */
     public Page<T> findByAuto(T entity){
-        PageRequest page = null;
-        if(entity.getOrder()!=null&&entity.getSort()!=null&&!entity.getOrder().equals("")&&!entity.getSort().equals("")) {
-            Sort sort = null;
-            if (entity.getOrder().equalsIgnoreCase("desc")) {
-                sort = new Sort(Sort.Direction.DESC, entity.getSort());
-            } else {
-                sort = new Sort(Sort.Direction.ASC, entity.getSort());
-            }
-            page = new PageRequest(entity.getPage()-1,entity.getLimit(),sort);
-        }else{
-            page = new PageRequest(entity.getPage()-1,entity.getLimit());
-        }
-        return getRepository().findByAuto(entity,page);
+        return getRepository().findByAuto(entity,this.getPageRequest(entity));
     }
 
     /**
@@ -59,11 +47,11 @@ public abstract class BaseService<T extends QueryBase> {
     }
 
     /**
-     * 功能描述：根据ID来删除数据
-     * @param id
+     * 功能描述：根据实体来删除数据
+     * @param entity
      */
-    public void remove(long id){
-         getRepository().delete(id);
+    public void remove(T entity){
+         getRepository().delete(entity);
     }
 
     /**
@@ -85,6 +73,22 @@ public abstract class BaseService<T extends QueryBase> {
         }else{
             return getRepository().findByAuto(entity,new PageRequest(0,Integer.MAX_VALUE)).getContent();
         }
+    }
+
+    public PageRequest getPageRequest(T entity){
+        PageRequest page = null;
+        if(entity.getOrder()!=null&&entity.getSort()!=null&&!entity.getOrder().equals("")&&!entity.getSort().equals("")) {
+            Sort sort = null;
+            if (entity.getOrder().equalsIgnoreCase("desc")) {
+                sort = new Sort(Sort.Direction.DESC, entity.getSort());
+            } else {
+                sort = new Sort(Sort.Direction.ASC, entity.getSort());
+            }
+            page = new PageRequest(entity.getPage()-1,entity.getLimit(),sort);
+        }else{
+            page = new PageRequest(entity.getPage()-1,entity.getLimit());
+        }
+        return page;
     }
 
 }

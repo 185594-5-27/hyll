@@ -1,55 +1,49 @@
 <html xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+>
 <head th:include="include/includebase"></head>
 <body>
 <div class="panel-body" style="padding-bottom:0px;">
-    <div class="panel panel-default">
-        <div class="panel-heading">查询条件</div>
-        <div class="panel-body">
-            <form class="form-inline" role="form" style="float: left; width: 100%;margin-left: 20px;" method="post" id="queryDict">
-                <div class="form-group">
-                    <label for="type">字典类型:</label>
-                    <input type="text" class="form-control" name="type" id="type"  placeholder="请输入字典类型" />
-                </div>
-                <div class="form-group">
-                    <label for="code">字典编码:</label>
-                    <input type="text" class="form-control" name="code" id="code"  placeholder="请输入字典编码" />
-                </div>
-                <div class="form-group">
-                    <label for="value">字典值:</label>
-                    <input type="text" class="form-control" name="value" id="value"  placeholder="请输入字典值" />
-                </div>
-                <div class="form-group">
-                    <label for="text">字典描述:</label>
-                    <input type="text" class="form-control" name="text" id="text"  placeholder="请输入字典值" />
-                </div>
-                <div class="form-group">
-                    <button type="button" id="queryBtn" onclick="doQuery();" class="btn btn-primary">查询</button>
-                </div>
-            </form>
+        <div class="panel panel-default" style="margin-top: 10px;">
+            <div class="panel-heading">查询条件</div>
+            <div class="panel-body">
+                <form class="form-inline" role="form" style="float: left; width: 100%;margin-left: 20px;" method="post" id="queryUser">
+                    <div class="form-group">
+                        <label for="userName">名字:</label>
+                        <input type="text" class="form-control" name="userName" id="userName"  placeholder="请输入名字" />
+                    </div>
+                    <div class="form-group">
+                        <label for="login">账号:</label>
+                        <input type="text" class="form-control" name="login" id="login"  placeholder="请输入账号" />
+                    </div>
+                    <div class="form-group">
+                        <label for="job">职位:</label>
+                        <input type="text" class="form-control" name="job" id="job"  placeholder="请输入职位" />
+                    </div>
+                    <div class="form-group">
+                        <button type="button" id="queryBtn" onclick="doQuery();" class="btn btn-primary">查询</button>
+                    </div>
+                </form>
+            </div>
         </div>
-    </div>
-    <table id="dict-table" style="margin-top: -50px;">
-    </table>
+        <table id="user-table" style="margin-top: -50px;">
+        </table>
 </div>
 <script th:inline="javascript">
-
     $(function() {
         initTable();
-        $('#dict-table').bootstrapTable('hideColumn', 'id');
     });
 
     function doQuery(){
-        $('#dict-table').bootstrapTable('refresh');    //刷新表格
+        $('#user-table').bootstrapTable('refresh');    //刷新表格
     }
 
     function initTable(){
-        $('#dict-table').bootstrapTable({
-            url:"dict/list",
+        $('#user-table').bootstrapTable({
+            url:"/user/list",
             height: $(window.parent.document).find("#wrapper").height() - 252,
             width:$(window).width(),
             showColumns:true,
-            formId :"queryDict",
+            formId :"queryUser",
             pagination : true,
             sortName : 'id',
             sortOrder : 'desc',
@@ -60,14 +54,14 @@
                     text: '添加',
                     iconCls: 'glyphicon glyphicon-plus',
                     handler: function () {
-                        window.Ewin.dialog({title:"添加",url:"dict/addPage",gridId:"gridId",width:400,height:460})
+                        window.Ewin.dialog({title:"添加",url:"user/addPage",gridId:"gridId",width:600,height:710})
                     }
                 },
                 {
                     text: '修改',
                     iconCls: 'glyphicon glyphicon-pencil',
                     handler: function () {
-                        var rows = $('#dict-table').bootstrapTable('getSelections');
+                        var rows = $('#group-user-table').bootstrapTable('getSelections');
                         if(rows.length==0||rows.length>1){
                             window.Ewin.alert({message:'请选择一条需要修改的数据!'});
                             return false;
@@ -79,32 +73,17 @@
                     text: '删除',
                     iconCls: 'glyphicon glyphicon-remove',
                     handler: function () {
-                        var rows = $('#dict-table').bootstrapTable('getSelections');
+                        var rows = $('#group-user-table').bootstrapTable('getSelections');
                         if(rows.length==0){
                             window.Ewin.alert({message:'请选择一条需要删除的数据!'});
                             return false;
                         }
                         window.Ewin.confirm({title:'提示',message:'是否要删除您所选择的记录？',width:500}).on(function (e) {
                             if (e) {
-                                $.post("dict/removeBath",{json:JSON.stringify(rows)},function(e){
-                                   if(e.result){
-                                       window.Ewin.alert({message:e.msg});
-                                       doQuery();
-                                   }
-                                });
-                            }
-                        });
-                    }
-                },
-                {
-                    text: '重新加载',
-                    iconCls: 'glyphicon glyphicon-record',
-                    handler: function () {
-                        window.Ewin.confirm({title:'提示',message:'是否要需要重新加载数据字典的数据？',width:500}).on(function (e) {
-                            if (e) {
-                                $.post("dict/reload",function(e){
+                                $.post("dict/remove",{json:JSON.stringify(rows)},function(e){
                                     if(e.result){
                                         window.Ewin.alert({message:e.msg});
+                                        doQuery();
                                     }
                                 });
                             }
@@ -125,42 +104,51 @@
                 },
                 {
                     field : 'id',
-                    title : '字典流水',
+                    title : '用户流水',
                     align : 'center',
                     valign : 'middle',
                     hide : false,
                     sortable : true
                 },
                 {
-                    field : 'type',
-                    title : '字典类型',
+                    field : 'userName',
+                    title : '用户姓名',
                     align : 'center',
                     valign : 'middle',
                     sortable : true
                 },
                 {
-                    field : 'code',
-                    title : '字典编码',
+                    field : 'login',
+                    title : '账号',
                     align : 'center',
                     valign : 'middle',
                     sortable : true
                 },
                 {
-                    field : 'value',
-                    title : '字典值',
+                    field : 'job',
+                    title : '职位名称',
                     align : 'center',
                     valign : 'middle',
                     sortable : true
                 },
                 {
-                    field : 'text',
-                    title : '字典描述',
+                    field : 'address',
+                    title : '用户地址',
+                    align : 'center',
+                    valign : 'middle',
+                    sortable : true
+                },
+                {
+                    field : 'orgGroup.name',
+                    title : '组织架构',
                     align : 'center',
                     valign : 'middle',
                     sortable : true
                 }]
         });
     }
+
+
 </script>
 </body>
 </html>

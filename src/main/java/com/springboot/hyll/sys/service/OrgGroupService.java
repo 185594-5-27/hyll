@@ -33,4 +33,22 @@ public class OrgGroupService extends BaseService<OrgGroup> {
         Sort sort = new Sort(Sort.Direction.ASC, "node");
         return orgGroupRepository.findAll(sort);
     }
+
+    /**
+     * 功能描述：根据菜单节点来获取其父节点的信息
+     * @param node
+     * @return
+     */
+    public OrgGroup findByNode(String node){
+        return orgGroupRepository.findByNode(node);
+    }
+
+    /**
+     * 功能描述：获取当前最大的组织机构代码编号
+     * @param parentNode
+     * @return
+     */
+    public String getMaxOrgGroup(String parentNode){
+        return orgGroupRepository.getMaxOrgGroup(parentNode);
+    }
 }

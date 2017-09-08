@@ -11,6 +11,7 @@ import com.springboot.hyll.sys.service.UserService;
 import org.springframework.data.domain.Page;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -40,6 +41,60 @@ public class OrgGroupController extends BaseController<OrgGroup> {
         return orgGroupService;
     }
 
+    @Override
+    public Map<String, Object> update(OrgGroup entity) {
+        Map<String,Object> result = new HashMap<String, Object>();
+        OrgGroup update = new OrgGroup();
+        update.setGroupId(entity.getGroupId());
+        update = orgGroupService.get(update);
+        update.setName(entity.getName());
+        update.setGroupCode(entity.getGroupCode());
+        update.setNum(entity.getNum());
+        entity = orgGroupService.save(update);
+        if(entity!=null){
+            result.put(SystemStaticConst.RESULT,SystemStaticConst.SUCCESS);
+            result.put(SystemStaticConst.MSG,"修改数据成功！");
+            result.put("entity",entity);
+        }else{
+            result.put(SystemStaticConst.RESULT,SystemStaticConst.FAIL);
+            result.put(SystemStaticConst.MSG,"修改数据失败！");
+        }
+        return result;
+    }
+
+    @Override
+    public Map<String, Object> save(OrgGroup entity) {
+        Map<String,Object> result = new HashMap<String, Object>();
+        String max_node = getMaxNode(orgGroupService.getMaxOrgGroup(entity.getOrgGroup().getNode()),entity.getOrgGroup().getNode());
+        entity.setParentNode(entity.getOrgGroup().getNode());
+        entity.setNode(max_node);
+        entity = orgGroupService.save(entity);
+        if(entity!=null){
+            result.put(SystemStaticConst.RESULT,SystemStaticConst.SUCCESS);
+            result.put(SystemStaticConst.MSG,"增加数据成功！");
+            result.put("entity",entity);
+        }else{
+            result.put(SystemStaticConst.RESULT,SystemStaticConst.FAIL);
+            result.put(SystemStaticConst.MSG,"增加数据失败！");
+        }
+        return result;
+    }
+
+    @RequestMapping(value="/updateGroupPage")
+    public String updateGroupPage(OrgGroup entity,Model model) throws Exception {
+        entity = orgGroupService.get(entity);
+        entity.setOrgGroup(orgGroupService.findByNode(entity.getParentNode()));
+        model.addAttribute("entity",entity);
+        return getPageBaseRoot()+UPDATEPAGE;
+    }
+
+    @RequestMapping(value="/addGroupPage")
+    public String addPage(OrgGroup entity,Model model) throws Exception {
+        entity = orgGroupService.get(entity);
+        model.addAttribute("entity",entity);
+        return getPageBaseRoot()+ADDPAGE;
+    }
+
     /**
      * 功能描述：获取组织架构底下的相应的用户
      * @return
@@ -48,7 +103,7 @@ public class OrgGroupController extends BaseController<OrgGroup> {
     @ResponseBody
     public Map<String,Object> userList(User user){
         Map<String,Object> result = new HashMap<String, Object>();
-        Page<User> page = userService.findByAuto(user);
+        Page<User> page = userService.queryGroupUser(user);
         result.put("totalCount",page.getTotalElements());
         result.put("result",page.getContent());
         return result;
@@ -69,6 +124,26 @@ public class OrgGroupController extends BaseController<OrgGroup> {
         return result;
     }
 
+    private String getMaxNode(String node,String parentNode){
+        String max_node = "";
+        if(node==null){
+            max_node = parentNode + "001";
+        }else{
+            String n = (Integer.parseInt(node.substring(node.length()-3)) + 1) + "";
+            switch(n.length()){
+                case 1:
+                    max_node = parentNode + "00" + n;
+                    break;
+                case 2:
+                    max_node = parentNode + "0" + n;
+                    break;
+                case 3:
+                    max_node = parentNode + "" + n;
+                    break;
+            }
+        }
+        return max_node;
+    }
 
 
 }

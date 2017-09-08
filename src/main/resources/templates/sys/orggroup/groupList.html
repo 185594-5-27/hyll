@@ -11,7 +11,6 @@
             <div class="panel-heading">查询条件</div>
             <div class="panel-body">
                 <form class="form-inline" role="form" style="float: left; width: 100%;margin-left: 20px;" method="post" id="queryGroupUser">
-                    <input type="hidden" id="groupId" name="orgGroup.groupId" value="" />
                     <input type="hidden" id="groupNode" name="orgGroup.node" value="" />
                     <input type="hidden" id="groupParentNode" name="orgGroup.parentNode" value="" />
                     <div class="form-group">
@@ -31,8 +30,7 @@
 <script th:inline="javascript">
     var zTree;
     var demoIframe;
-
-    var newCount=10000;
+    var selectNode;
 
     function addHoverDom(treeId, treeNode) {
         var sObj = $("#" + treeNode.tId + "_span");
@@ -43,21 +41,37 @@
         sObj.after(addStr);
         var btn = $("#addBtn_"+treeNode.tId);
         if (btn) btn.bind("click", function(){
-            var zTree = $.fn.zTree.getZTreeObj("tree");
-            alert(treeNode.node)
-            zTree.addNodes(treeNode, {id:(1000 + newCount), pId:treeNode.node, name:"new node" + (newCount++)});
+            zTree = $.fn.zTree.getZTreeObj("tree");
+            selectNode = treeNode;
+            window.Ewin.dialog({title:"添加",url:"group/addGroupPage?groupId="+treeNode.groupId,gridId:"gridId",width:400,height:460})
             return false;
         });
         var remove_btn = $("#removeBtn_"+treeNode.tId);
-        if (remove_btn) remove_btn.bind("click", function(){
-            var zTree = $.fn.zTree.getZTreeObj("tree");
-            alert(treeNode.node)
+        if (remove_btn) remove_btn.bind("click", function() {
+            zTree = $.fn.zTree.getZTreeObj("tree");
+            if (treeNode.isParent) {
+                window.Ewin.alert({message:"请先删除当前组织架构底下的子组织架构！"});
+            }else{
+                window.Ewin.confirm({title: '提示', message: '是否要删除您当前选中的组织机构？', width: 500}).on(function (e) {
+                    if (e) {
+                        $.post("group/remove",{groupId:treeNode.groupId},function(e){
+                            if(e.result){
+                                zTree.removeNode(treeNode);
+                                window.Ewin.alert({message:e.msg});
+                            }else{
+                                window.Ewin.alert({message:e.msg});
+                            }
+                        })
+                    }
+                });
+            }
             return false;
         });
         var edit_btn = $("#editBtn_"+treeNode.tId);
         if (edit_btn) edit_btn.bind("click", function(){
-            var zTree = $.fn.zTree.getZTreeObj("tree");
-            alert(treeNode.node)
+            zTree = $.fn.zTree.getZTreeObj("tree");
+            selectNode = treeNode;
+            window.Ewin.dialog({title:"修改",url:"group/updateGroupPage?groupId="+treeNode.groupId,gridId:"gridId",width:400,height:460})
             return false;
         });
     };
@@ -75,7 +89,7 @@
         view: {
             addHoverDom: addHoverDom,
             removeHoverDom: removeHoverDom,
-            dblClickExpand: false,
+            dblClickExpand: true,
             showLine: true,
             selectedMulti: false
         },
@@ -84,8 +98,6 @@
                 enable:true,
                 idKey: "node",
                 pIdKey: "parentNode",
-               // idKey: "id",
-                //pIdKey: "pId",
                 rootPId: "0"
             }
         },
@@ -93,33 +105,20 @@
             beforeClick: function(treeId, treeNode) {
                 var zTree = $.fn.zTree.getZTreeObj('tree');
                 if (treeNode.isParent) {
-                    zTree.expandNode(treeNode);
+                    //zTree.expandNode(treeNode);
                     $("#groupParentNode").attr("value",treeNode.parentNode);
                     $("#groupNode").attr("value",treeNode.node);
-                    $("#groupId").attr("value",treeNode.groupId);
                     doQuery();
                     return false;
                 } else {
-                    alert(treeNode.name);
-                    $("#parentNode").attr("value",treeNode.parentNode);
-                    $("#node").attr("value",treeNode.node);
-                    $("#groupId").attr("value",treeNode.groupId);
+                    $("#groupParentNode").attr("value",treeNode.parentNode);
+                    $("#groupNode").attr("value",treeNode.node);
                     doQuery();
                     return true;
                 }
             }
         }
     };
-
-    $(document).ready(function(){
-      //  var t = $("#tree");
-       // t = $.fn.zTree.init(t, setting, zNodes);
-       // demoIframe = $("#testIframe");
-        //demoIframe.bind("load", loadReady);
-       // var zTree = $.fn.zTree.getZTreeObj("tree");
-       // zTree.selectNode(zTree.getNodeByParam("id", 101));
-
-    });
 
     function loadReady() {
         var bodyH = demoIframe.contents().find("body").get(0).scrollHeight,
@@ -138,7 +137,6 @@
             t = $.fn.zTree.init(t, setting,info.data);
             $("#groupParentNode").attr("value",$.fn.zTree.getZTreeObj('tree').getNodes()[0].parentNode);
             $("#groupNode").attr("value",$.fn.zTree.getZTreeObj('tree').getNodes()[0].node);
-            $("#groupId").attr("value",$.fn.zTree.getZTreeObj('tree').getNodes()[0].groupId);
             initTable();
             $('#group-user-table').bootstrapTable('hideColumn', 'id');
         })
@@ -238,6 +236,13 @@
                 {
                     field : 'address',
                     title : '用户地址',
+                    align : 'center',
+                    valign : 'middle',
+                    sortable : true
+                },
+                {
+                    field : 'orgGroup.name',
+                    title : '组织架构',
                     align : 'center',
                     valign : 'middle',
                     sortable : true

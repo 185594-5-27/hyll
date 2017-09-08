@@ -31,6 +31,17 @@ public class OrgGroup extends QueryBase implements Serializable {
     private Long num;
     // 部门现有人数
     private Long existingNum;
+    // 父部门信息【添加Transient在初始化的时候不会去创建字段】
+    @Transient
+    private OrgGroup orgGroup;
+
+    public OrgGroup getOrgGroup() {
+        return orgGroup;
+    }
+
+    public void setOrgGroup(OrgGroup orgGroup) {
+        this.orgGroup = orgGroup;
+    }
 
     public Long getGroupId() {
         return groupId;
