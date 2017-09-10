@@ -54,19 +54,19 @@
                     text: '添加',
                     iconCls: 'glyphicon glyphicon-plus',
                     handler: function () {
-                        window.Ewin.dialog({title:"添加",url:"user/addPage",gridId:"gridId",width:600,height:710})
+                        window.Ewin.dialog({title:"添加",url:"user/addPage",gridId:"gridId",width:600,height:700})
                     }
                 },
                 {
                     text: '修改',
                     iconCls: 'glyphicon glyphicon-pencil',
                     handler: function () {
-                        var rows = $('#group-user-table').bootstrapTable('getSelections');
+                        var rows = $('#user-table').bootstrapTable('getSelections');
                         if(rows.length==0||rows.length>1){
                             window.Ewin.alert({message:'请选择一条需要修改的数据!'});
                             return false;
                         }
-                        window.Ewin.dialog({title:"修改",url:"dict/updatePage?id="+rows[0].id,gridId:"gridId",width:400,height:460});
+                        window.Ewin.dialog({title:"修改",url:"user/updatePage?id="+rows[0].id,width:600,height:570});
                     }
                 },
                 {
