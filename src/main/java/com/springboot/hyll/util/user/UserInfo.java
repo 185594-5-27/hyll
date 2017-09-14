@@ -1,6 +1,7 @@
 package com.springboot.hyll.util.user;
 
 import com.springboot.hyll.sys.entity.User;
+import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 
@@ -12,6 +13,16 @@ import java.util.Optional;
  * Created by Administrator on 2017/8/7 0007.
  */
 public class UserInfo {
+
+    /**
+     * 功能描述：实现对密码进行MD5加密
+     * @param password
+     * @return
+     */
+    public static String encode(String password){
+        Md5PasswordEncoder encoder = new Md5PasswordEncoder();
+        return encoder.encodePassword(password, "hyll");
+    }
 
     /**
      * 功能描述：获取当前登陆的用户的信息

@@ -1,6 +1,7 @@
 package com.springboot.hyll.sys.entity;
 
 import com.springboot.hyll.config.common.base.entity.QueryBase;
+import com.springboot.hyll.sys.service.UserRoleService;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -18,6 +19,18 @@ import java.util.List;
 public class User extends QueryBase implements UserDetails {
 
     private static final long serialVersionUID = 3336609444741094787L;
+    //  账号状态-禁用
+    public static String STATE_OFF = "0";
+    // 账号状态-启用
+    public static String STATE_ON = "1";
+
+    public User(){
+        super();
+    }
+
+    public User(Integer id){
+        this.id = id;
+    }
 
     @Id //2
     @GeneratedValue //3
@@ -42,14 +55,36 @@ public class User extends QueryBase implements UserDetails {
     private String job;
     // 出生日期
     private Date birthDate;
+    // 账号状态（0：禁用；1：启用）
+    private String state;
 
-    @ManyToOne(cascade = {CascadeType.MERGE,CascadeType.REFRESH }, optional = true)
+    // 权限集合数据
+    @Transient
+    private String roleArray;
+
+    @ManyToOne(optional = true)
     @JoinColumn(name="group_id")
     private OrgGroup orgGroup;
 
-    @ManyToMany(cascade = {CascadeType.ALL},fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_associate_role", joinColumns = { @JoinColumn(name ="user_id" )}, inverseJoinColumns = { @JoinColumn(name = "role_id") })
     private List<UserRole> roles;
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
+    }
+
+    public String getRoleArray() {
+        return roleArray;
+    }
+
+    public void setRoleArray(String roleArray) {
+        this.roleArray = roleArray;
+    }
 
     public Date getBirthDate() {
         return birthDate;
@@ -191,5 +226,23 @@ public class User extends QueryBase implements UserDetails {
         this.address = address;
     }
 
+    /**
+     * 功能描述：组装角色数据集合
+     * @param rolseArray
+     * @param userRoleService
+     */
+    public void packagingRoles(String rolseArray,UserRoleService userRoleService){
+        if(rolseArray!=null){
+            List<UserRole> roles = new ArrayList<UserRole>();
+            UserRole userRole = null;
+            for(String roleId:rolseArray.split(",")){
+                userRole = new UserRole();
+                userRole.setId(Long.parseLong(roleId));
+                userRole = userRoleService.get(userRole);
+                roles.add(userRole);
+            }
+            this.setRoles(roles);
+        }
+    }
 
 }

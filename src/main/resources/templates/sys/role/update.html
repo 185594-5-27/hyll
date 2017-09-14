@@ -4,8 +4,12 @@
 <form id="roleForm"  role="form" method="post" action="role/update">
     <input type="hidden" name="id" id="roleId" th:value="${entity.id}" />
     <div class="form-group" >
-        <label for="name">权限名称:</label>
-        <input type="text" class="form-control" name="name" id="name" th:value="${entity.name}"  placeholder="请输入权限名称" />
+        <label for="name">权限代码:</label>
+        <input type="text" class="form-control" name="name" id="name" th:value="${entity.name}"  placeholder="请输入权限代码" />
+    </div>
+    <div class="form-group" >
+        <label for="roleName">权限名称:</label>
+        <input type="text" class="form-control" name="roleName" id="roleName" th:value="${entity.roleName}"  placeholder="请输入权限名称" />
     </div>
 </form>
 <script th:inline="javascript">
@@ -20,10 +24,10 @@
             },
             fields: {
                 name: {
-                    message: '权限名称验证失败',
+                    message: '权限代码验证失败',
                     validators: {
                         notEmpty: {
-                            message: '权限名称不能为空'
+                            message: '权限代码不能为空'
                         },
                         threshold :  2 , //有6字符以上才发送ajax请求，（input中输入一个字符，插件会向服务器发送一次，设置限制，6字符以上才开始）
                         remote: {//ajax验证。server result:{"valid",true or false} 向服务发送当前input name值，获得一个json数据。例表示正确：{"valid",true}
@@ -34,9 +38,17 @@
                                     id:$("#roleId").val()
                                 }
                             },
-                            message: '权限名称已存在',//提示消息
+                            message: '权限代码已存在',//提示消息
                             delay :  500,//每输入一个字符，就发ajax请求，服务器压力还是太大，设置2秒发送一次ajax（默认输入一个字符，提交一次，服务器压力太大）
                             type: 'POST'//请求方式
+                        }
+                    }
+                },
+                roleName:{
+                    message: '权限名称验证失败',
+                    validators: {
+                        notEmpty: {
+                            message: '权限名称不能为空'
                         }
                     }
                 }

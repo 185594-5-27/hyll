@@ -31,10 +31,23 @@
 <script th:inline="javascript">
     $(function() {
         initTable();
+        $('#user-table').bootstrapTable('hideColumn', 'id');
     });
 
     function doQuery(){
         $('#user-table').bootstrapTable('refresh');    //刷新表格
+    }
+
+    // 账号禁用和启用
+    function userControl(state,id){
+        $.post("/user/userControl",{state:state,id:id},function(data){
+            if(data.result){
+                window.Ewin.alert({message:'操作成功!'});
+                doQuery();
+            }else{
+                window.Ewin.alert({message:'操作失败!'});
+            }
+        })
     }
 
     function initTable(){
@@ -54,7 +67,7 @@
                     text: '添加',
                     iconCls: 'glyphicon glyphicon-plus',
                     handler: function () {
-                        window.Ewin.dialog({title:"添加",url:"user/addPage",gridId:"gridId",width:600,height:700})
+                        window.Ewin.dialog({title:"添加",url:"user/addPage",gridId:"gridId",width:600,height:745})
                     }
                 },
                 {
@@ -66,21 +79,21 @@
                             window.Ewin.alert({message:'请选择一条需要修改的数据!'});
                             return false;
                         }
-                        window.Ewin.dialog({title:"修改",url:"user/updatePage?id="+rows[0].id,width:600,height:570});
+                        window.Ewin.dialog({title:"修改",url:"user/updatePage?id="+rows[0].id,width:600,height:590});
                     }
                 },
                 {
                     text: '删除',
                     iconCls: 'glyphicon glyphicon-remove',
                     handler: function () {
-                        var rows = $('#group-user-table').bootstrapTable('getSelections');
+                        var rows = $('#user-table').bootstrapTable('getSelections');
                         if(rows.length==0){
                             window.Ewin.alert({message:'请选择一条需要删除的数据!'});
                             return false;
                         }
-                        window.Ewin.confirm({title:'提示',message:'是否要删除您所选择的记录？',width:500}).on(function (e) {
+                        window.Ewin.confirm({title:'提示',message:'是否要删除您当前所勾选的用户？',width:500}).on(function (e) {
                             if (e) {
-                                $.post("dict/remove",{json:JSON.stringify(rows)},function(e){
+                                $.post("user/removeBath",{json:JSON.stringify(rows)},function(e){
                                     if(e.result){
                                         window.Ewin.alert({message:e.msg});
                                         doQuery();
@@ -144,6 +157,33 @@
                     align : 'center',
                     valign : 'middle',
                     sortable : true
+                },
+                {
+                    field : 'state',
+                    title : '账号状态',
+                    align : 'center',
+                    valign : 'middle',
+                    sortable : true,
+                    formatter: function (value, row, index) {
+                        if(value=='1'){
+                            return "正常";
+                        }else{
+                            return "禁用";
+                        }
+                    }
+                },{
+                    field : 'operations',
+                    title : '操作',
+                    align : 'center',
+                    valign : 'middle',
+                    formatter: function (value, row, index) {
+                        if(row.state=='1'){
+                            return '<a href="#" onclick="userControl(0,'+row.id+')" >禁用</a>';
+                        }else{
+                            return '<a href="#" onclick="userControl(1,'+row.id+')" >启用</a>';
+                        }
+
+                    }
                 }]
         });
     }

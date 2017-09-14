@@ -351,7 +351,7 @@
         sortable: true,
         silentSort: true,
         maintainSelected: false,
-        searchTimeOut: 500,
+        searchTimeOut: 2000,
         searchText: '',
         iconSize: undefined,
         buttonsClass: 'default',

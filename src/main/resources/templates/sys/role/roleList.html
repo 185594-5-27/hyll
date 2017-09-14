@@ -8,8 +8,12 @@
         <div class="panel-body">
             <form class="form-inline" role="form" style="float: left; width: 100%;margin-left: 20px;" method="post" id="queryRole">
                 <div class="form-group">
-                    <label for="name">权限名称:</label>
-                    <input type="text" class="form-control" name="name" id="name"  placeholder="请输入权限名称" />
+                    <label for="name">权限代码:</label>
+                    <input type="text" class="form-control" name="name" id="name"  placeholder="请输入权限代码" />
+                </div>
+                <div class="form-group">
+                    <label for="roleName">权限名称:</label>
+                    <input type="text" class="form-control" name="roleName" id="roleName"  placeholder="请输入权限名称" />
                 </div>
                 <div class="form-group">
                     <button type="button" id="queryBtn" onclick="doQuery();" class="btn btn-primary">查询</button>
@@ -47,7 +51,7 @@
                     text: '添加',
                     iconCls: 'glyphicon glyphicon-plus',
                     handler: function () {
-                        window.Ewin.dialog({title:"添加",url:"role/addPage",gridId:"gridId",width:400,height:240})
+                        window.Ewin.dialog({title:"添加",url:"role/addPage",gridId:"gridId",width:400,height:310})
                     }
                 },
                 {
@@ -59,7 +63,7 @@
                             window.Ewin.alert({message:'请选择一条需要修改的数据!'});
                             return false;
                         }
-                        window.Ewin.dialog({title:"修改",url:"role/updatePage?id="+rows[0].id,gridId:"gridId",width:400,height:240});
+                        window.Ewin.dialog({title:"修改",url:"role/updatePage?id="+rows[0].id,gridId:"gridId",width:400,height:310});
                     }
                 },
                 {
@@ -104,6 +108,13 @@
                 },
                 {
                     field : 'name',
+                    title : '权限代码',
+                    align : 'center',
+                    valign : 'middle',
+                    sortable : true
+                },
+                {
+                    field : 'roleName',
                     title : '权限名称',
                     align : 'center',
                     valign : 'middle',

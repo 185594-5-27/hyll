@@ -163,7 +163,7 @@
                     text: '添加',
                     iconCls: 'glyphicon glyphicon-plus',
                     handler: function () {
-                        window.Ewin.dialog({title:"添加",url:"dict/addPage",gridId:"gridId",width:400,height:460})
+                        window.Ewin.dialog({title:"添加",url:"group/addUserPage",gridId:"gridId",width:600,height:745})
                     }
                 },
                 {
@@ -175,7 +175,7 @@
                             window.Ewin.alert({message:'请选择一条需要修改的数据!'});
                             return false;
                         }
-                        window.Ewin.dialog({title:"修改",url:"dict/updatePage?id="+rows[0].id,gridId:"gridId",width:400,height:460});
+                        window.Ewin.dialog({title:"修改",url:"group/updateUserPage?id="+rows[0].id,gridId:"gridId",width:600,height:590});
                     }
                 },
                 {
@@ -189,7 +189,7 @@
                         }
                         window.Ewin.confirm({title:'提示',message:'是否要删除您所选择的记录？',width:500}).on(function (e) {
                             if (e) {
-                                $.post("dict/remove",{json:JSON.stringify(rows)},function(e){
+                                $.post("user/removeBath",{json:JSON.stringify(rows)},function(e){
                                     if(e.result){
                                         window.Ewin.alert({message:e.msg});
                                         doQuery();

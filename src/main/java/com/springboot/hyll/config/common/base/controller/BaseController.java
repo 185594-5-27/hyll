@@ -112,6 +112,7 @@ public abstract class BaseController<T extends QueryBase> {
         if(entity!=null){
             result.put(SystemStaticConst.RESULT,SystemStaticConst.SUCCESS);
             result.put(SystemStaticConst.MSG,"更新数据成功！");
+            result.put("entity",entity);
         }else{
             result.put(SystemStaticConst.RESULT,SystemStaticConst.FAIL);
             result.put(SystemStaticConst.MSG,"更新数据失败！");

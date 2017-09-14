@@ -8,6 +8,7 @@ import com.springboot.hyll.sys.entity.OrgGroup;
 import com.springboot.hyll.sys.entity.User;
 import com.springboot.hyll.sys.service.OrgGroupService;
 import com.springboot.hyll.sys.service.UserService;
+import com.springboot.hyll.util.json.JsonHelper;
 import org.springframework.data.domain.Page;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
@@ -39,6 +40,30 @@ public class OrgGroupController extends BaseController<OrgGroup> {
     @Override
     protected BaseService<OrgGroup> getService() {
         return orgGroupService;
+    }
+
+    /**
+     * 功能描述：跳转到更新用户的页面
+     * @param entity
+     * @param model
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping(value="/updateUserPage")
+    public String updateUserPage(User entity, Model model) throws Exception {
+        entity = userService.get(entity);
+        entity.setRoleArray(JsonHelper.list2json(entity.getRoles()));
+        model.addAttribute("entity",entity);
+        return getPageBaseRoot()+"/updateUser";
+    }
+
+    /**
+     * 跳转到添加用户的页面
+     * @throws Exception
+     * */
+    @RequestMapping(value="/addUserPage")
+    public String addUserPage() throws Exception{
+        return getPageBaseRoot()+"/addUser";
     }
 
     @Override

@@ -15,8 +15,18 @@ public class UserRole extends QueryBase implements Serializable {
     @Id
     @GeneratedValue
     private Long id;
-
+    // 权限代码
     private String name;
+    // 权限名称
+    private String roleName;
+
+    public String getRoleName() {
+        return roleName;
+    }
+
+    public void setRoleName(String roleName) {
+        this.roleName = roleName;
+    }
 
     public Long getId() {
         return id;
