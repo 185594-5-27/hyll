@@ -228,21 +228,21 @@ public class User extends QueryBase implements UserDetails {
 
     /**
      * 功能描述：组装角色数据集合
-     * @param rolseArray
-     * @param userRoleService
+     * @param roleArray
      */
-    public void packagingRoles(String rolseArray,UserRoleService userRoleService){
-        if(rolseArray!=null){
-            List<UserRole> roles = new ArrayList<UserRole>();
+    public void packagingRoles(String roleArray){
+        List<UserRole> roles = new ArrayList<UserRole>();
+        if(roleArray!=null){
             UserRole userRole = null;
-            for(String roleId:rolseArray.split(",")){
-                userRole = new UserRole();
-                userRole.setId(Long.parseLong(roleId));
-                userRole = userRoleService.get(userRole);
-                roles.add(userRole);
+            for(String roleId:roleArray.split(",")){
+                if(!roleId.isEmpty()){
+                    userRole = new UserRole();
+                    userRole.setId(Long.parseLong(roleId));
+                    roles.add(userRole);
+                }
             }
-            this.setRoles(roles);
         }
+        this.setRoles(roles);
     }
 
 }

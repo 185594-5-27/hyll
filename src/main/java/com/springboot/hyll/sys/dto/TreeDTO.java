@@ -1,40 +1,22 @@
-package com.springboot.hyll.sys.entity;
+package com.springboot.hyll.sys.dto;
 
-import com.springboot.hyll.config.common.base.entity.QueryBase;
-
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Transient;
 import java.io.Serializable;
 
 /*
 * 类描述：
 * @auther linzf
-* @create 2017/9/14 0014 
+* @create 2017/9/19 0019 
 */
-@Entity
-public class Tree extends QueryBase implements Serializable {
+public class TreeDTO implements Serializable {
 
-    private static final long serialVersionUID = 6367070425790693190L;
 
-    public Tree(){
-        super();
-    }
+    private static final long serialVersionUID = -1594183211347796443L;
 
-    public Tree(Long id){
-        this.id = id;
-    }
-
-    @Id //2
-    @GeneratedValue
     private Long id;
     // 父节点ID
     private Long pId;
     // 菜单节点名字
     private String name;
-    // 菜单响应地址
-    private String url;
     // 菜单编码
     private String code;
     // 菜单样式
@@ -43,13 +25,8 @@ public class Tree extends QueryBase implements Serializable {
     private String state;
     // 菜单顺序
     private Long treeOrder;
-    // 菜单节点是否选中的状态
-    @Transient
+    // 菜单节点是否选中的状态(true:选中；false:未选中)
     private boolean checked;
-
-    // 父菜单信息
-    @Transient
-    private Tree tree;
 
     public boolean isChecked() {
         return checked;
@@ -57,22 +34,6 @@ public class Tree extends QueryBase implements Serializable {
 
     public void setChecked(boolean checked) {
         this.checked = checked;
-    }
-
-    public Tree getTree() {
-        return tree;
-    }
-
-    public void setTree(Tree tree) {
-        this.tree = tree;
-    }
-
-    public Long getTreeOrder() {
-        return treeOrder;
-    }
-
-    public void setTreeOrder(Long treeOrder) {
-        this.treeOrder = treeOrder;
     }
 
     public Long getId() {
@@ -99,14 +60,6 @@ public class Tree extends QueryBase implements Serializable {
         this.name = name;
     }
 
-    public String getUrl() {
-        return url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
-    }
-
     public String getCode() {
         return code;
     }
@@ -129,5 +82,13 @@ public class Tree extends QueryBase implements Serializable {
 
     public void setState(String state) {
         this.state = state;
+    }
+
+    public Long getTreeOrder() {
+        return treeOrder;
+    }
+
+    public void setTreeOrder(Long treeOrder) {
+        this.treeOrder = treeOrder;
     }
 }

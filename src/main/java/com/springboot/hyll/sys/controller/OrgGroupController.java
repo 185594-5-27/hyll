@@ -89,20 +89,10 @@ public class OrgGroupController extends BaseController<OrgGroup> {
 
     @Override
     public Map<String, Object> save(OrgGroup entity) {
-        Map<String,Object> result = new HashMap<String, Object>();
         String max_node = getMaxNode(orgGroupService.getMaxOrgGroup(entity.getOrgGroup().getNode()),entity.getOrgGroup().getNode());
         entity.setParentNode(entity.getOrgGroup().getNode());
         entity.setNode(max_node);
-        entity = orgGroupService.save(entity);
-        if(entity!=null){
-            result.put(SystemStaticConst.RESULT,SystemStaticConst.SUCCESS);
-            result.put(SystemStaticConst.MSG,"增加数据成功！");
-            result.put("entity",entity);
-        }else{
-            result.put(SystemStaticConst.RESULT,SystemStaticConst.FAIL);
-            result.put(SystemStaticConst.MSG,"增加数据失败！");
-        }
-        return result;
+        return super.save(entity);
     }
 
     @RequestMapping(value="/updateGroupPage")

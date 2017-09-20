@@ -103,7 +103,7 @@ public class UserController extends BaseController<User> {
         update.setAddress(entity.getProvince()+entity.getCity()+entity.getDistrict()+entity.getStreetAddress());
         update.setJob(entity.getJob());
         update.setOrgGroup(entity.getOrgGroup());
-        update.packagingRoles(entity.getRoleArray(),userRoleService);
+        update.packagingRoles(entity.getRoleArray());
         return super.update(update);
     }
 
@@ -117,7 +117,7 @@ public class UserController extends BaseController<User> {
         entity.setAddress(entity.getProvince()+entity.getCity()+entity.getDistrict()+entity.getStreetAddress());
         entity.setPassword(UserInfo.encode(entity.getPassword()));
         entity.setState(User.STATE_ON);
-        entity.packagingRoles(entity.getRoleArray(),userRoleService);
+        entity.packagingRoles(entity.getRoleArray());
         return super.save(entity);
     }
 
