@@ -8,7 +8,7 @@
     </div>
     <div class="col-md-9">
         <div class="panel panel-default" style="margin-top: 10px;">
-            <div class="panel-heading">查询条件</div>
+            <div class="panel-heading" id="groupQueryTitle">查询条件</div>
             <div class="panel-body">
                 <form class="form-inline" role="form" style="float: left; width: 100%;margin-left: 20px;" method="post" id="queryGroupUser">
                     <input type="hidden" id="groupNode" name="orgGroup.node" value="" />
@@ -104,15 +104,14 @@
         callback: {
             beforeClick: function(treeId, treeNode) {
                 var zTree = $.fn.zTree.getZTreeObj('tree');
+                $("#groupParentNode").attr("value",treeNode.parentNode);
+                $("#groupNode").attr("value",treeNode.node);
+                $("#groupQueryTitle").html("查询条件（"+treeNode.name+"）")
+                doQuery();
                 if (treeNode.isParent) {
                     //zTree.expandNode(treeNode);
-                    $("#groupParentNode").attr("value",treeNode.parentNode);
-                    $("#groupNode").attr("value",treeNode.node);
-                    doQuery();
                     return false;
                 } else {
-                    $("#groupParentNode").attr("value",treeNode.parentNode);
-                    $("#groupNode").attr("value",treeNode.node);
                     doQuery();
                     return true;
                 }
@@ -137,6 +136,7 @@
             t = $.fn.zTree.init(t, setting,info.data);
             $("#groupParentNode").attr("value",$.fn.zTree.getZTreeObj('tree').getNodes()[0].parentNode);
             $("#groupNode").attr("value",$.fn.zTree.getZTreeObj('tree').getNodes()[0].node);
+            $("#groupQueryTitle").html("查询条件（"+$.fn.zTree.getZTreeObj('tree').getNodes()[0].name+"）")
             initTable();
             $('#group-user-table').bootstrapTable('hideColumn', 'id');
         })
