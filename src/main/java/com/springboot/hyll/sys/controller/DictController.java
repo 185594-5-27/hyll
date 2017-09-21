@@ -35,6 +35,20 @@ public class DictController extends BaseController<Dict> {
     }
 
     /**
+     * 功能描述：将字典数据初始化到前端js中
+     * @return
+     */
+    @RequestMapping(value = "/loadDict",method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public Map<String,Object> loadDict(){
+        Map<String,Object> result = new HashMap<String, Object>();
+        List<Dict> dictList = dictService.loadAll(new Dict("1"));
+        result.put(SystemStaticConst.RESULT,SystemStaticConst.SUCCESS);
+        result.put("data",dictList);
+        return result;
+    }
+
+    /**
      * 功能描述：重新加载数据字典的数据到内存中
      * @return
      */

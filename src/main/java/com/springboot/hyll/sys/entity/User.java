@@ -57,6 +57,8 @@ public class User extends QueryBase implements UserDetails {
     private Date birthDate;
     // 账号状态（0：禁用；1：启用）
     private String state;
+    // 用户类型（1：后台用户；2：其他用户【可扩展】）
+    private String type;
 
     // 权限集合数据
     @Transient
@@ -69,6 +71,14 @@ public class User extends QueryBase implements UserDetails {
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_associate_role", joinColumns = { @JoinColumn(name ="user_id" )}, inverseJoinColumns = { @JoinColumn(name = "role_id") })
     private List<UserRole> roles;
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
 
     public String getState() {
         return state;

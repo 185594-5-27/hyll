@@ -19,6 +19,11 @@
         <label for="text">字典描述:</label>
         <input type="text" class="form-control" name="text" id="text" th:value="${entity.text}"  placeholder="请输入字典描述" />
     </div>
+    <div class="form-group">
+        <label >前端加载:</label>
+        <label  class='radio-inline'><input type='radio' name='isLoad' value='1'  th:checked="${entity.isLoad} == 1?true:false"   />允许</label>
+        <label  class='radio-inline'><input type='radio' name='isLoad' value='0'  th:checked="${entity.isLoad} == 0?true:false" />不允许</label>
+    </div>
 </form>
 <script th:inline="javascript">
     <![CDATA[

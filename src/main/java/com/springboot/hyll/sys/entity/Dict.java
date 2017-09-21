@@ -17,6 +17,14 @@ public class Dict extends QueryBase implements Serializable {
     // alt + enter 就可实现序列化接口
     private static final long serialVersionUID = 7128807041841801639L;
 
+    public Dict(){
+        super();
+    }
+
+    public Dict(String isLoad){
+        this.isLoad = isLoad;
+    }
+
     // 流水id
     @Id
     @GeneratedValue
@@ -29,6 +37,16 @@ public class Dict extends QueryBase implements Serializable {
     private String text;
     // 字典值
     private String value;
+    // 是否允许直接加载到页面（0：不允许；1：允许）
+    private String isLoad;
+
+    public String getIsLoad() {
+        return isLoad;
+    }
+
+    public void setIsLoad(String isLoad) {
+        this.isLoad = isLoad;
+    }
 
     public Long getId() {
         return id;

@@ -7,6 +7,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Transient;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 /*
 * 类描述：
@@ -14,7 +16,7 @@ import java.io.Serializable;
 * @create 2017/9/14 0014 
 */
 @Entity
-public class Tree extends QueryBase implements Serializable {
+public class Tree extends QueryBase implements Serializable,Comparable<Tree> {
 
     private static final long serialVersionUID = 6367070425790693190L;
 
@@ -50,6 +52,17 @@ public class Tree extends QueryBase implements Serializable {
     // 父菜单信息
     @Transient
     private Tree tree;
+    // 子菜单节点信息
+    @Transient
+    private List<Tree> child = new ArrayList<Tree>();
+
+    public List<Tree> getChild() {
+        return child;
+    }
+
+    public void setChild(List<Tree> child) {
+        this.child = child;
+    }
 
     public boolean isChecked() {
         return checked;
@@ -129,5 +142,16 @@ public class Tree extends QueryBase implements Serializable {
 
     public void setState(String state) {
         this.state = state;
+    }
+
+    /**
+     * 功能描述：实现集合根据treeOrder字段进行排序的功能
+     * @param o
+     * @return
+     */
+    @Override
+    public int compareTo(Tree o) {
+        long i = this.getTreeOrder() - o.getTreeOrder();
+        return Integer.parseInt(i+"");
     }
 }

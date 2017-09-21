@@ -60,7 +60,7 @@
                     text: '添加',
                     iconCls: 'glyphicon glyphicon-plus',
                     handler: function () {
-                        window.Ewin.dialog({title:"添加",url:"dict/addPage",gridId:"gridId",width:400,height:460})
+                        window.Ewin.dialog({title:"添加",url:"dict/addPage",gridId:"gridId",width:400,height:500})
                     }
                 },
                 {
@@ -72,7 +72,7 @@
                             window.Ewin.alert({message:'请选择一条需要修改的数据!'});
                             return false;
                         }
-                        window.Ewin.dialog({title:"修改",url:"dict/updatePage?id="+rows[0].id,gridId:"gridId",width:400,height:460});
+                        window.Ewin.dialog({title:"修改",url:"dict/updatePage?id="+rows[0].id,gridId:"gridId",width:400,height:500});
                     }
                 },
                 {
@@ -158,6 +158,16 @@
                     align : 'center',
                     valign : 'middle',
                     sortable : true
+                },
+                {
+                    field : 'isLoad',
+                    title : '前端加载',
+                    align : 'center',
+                    valign : 'middle',
+                    sortable : true,
+                    formatter: function (value, row, index) {
+                        return getCodeDictText("DICT_IS_LOAD",value);
+                    }
                 }]
         });
     }

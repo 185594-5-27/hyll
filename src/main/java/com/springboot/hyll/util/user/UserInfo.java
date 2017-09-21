@@ -1,18 +1,36 @@
 package com.springboot.hyll.util.user;
 
+import com.springboot.hyll.sys.entity.Tree;
 import com.springboot.hyll.sys.entity.User;
+import com.springboot.hyll.sys.entity.UserRole;
+import com.springboot.hyll.util.node.NodeUtil;
 import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 /**
  * Created by Administrator on 2017/8/7 0007.
  */
 public class UserInfo {
+
+
+
+    /**
+     * 功能描述：加载菜单节点的数据
+     * @return
+     */
+    public static List<Tree> loadUserTree(){
+        Map<Long,Tree> treeMap = new HashMap<Long,Tree>();
+        User user = getUser();
+        for(UserRole userRole:user.getRoles()){
+            for(Tree tree:userRole.getTreeList()){
+                treeMap.put(tree.getId(),tree);
+            }
+        }
+        return NodeUtil.getChildNodes(new ArrayList<Tree>(treeMap.values()),0l);
+    }
 
     /**
      * 功能描述：实现对密码进行MD5加密

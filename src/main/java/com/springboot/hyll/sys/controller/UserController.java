@@ -3,6 +3,7 @@ package com.springboot.hyll.sys.controller;
 import com.springboot.hyll.config.common.base.controller.BaseController;
 import com.springboot.hyll.config.common.base.service.BaseService;
 import com.springboot.hyll.config.common.constant.SystemStaticConst;
+import com.springboot.hyll.sys.entity.Tree;
 import com.springboot.hyll.sys.entity.User;
 import com.springboot.hyll.sys.entity.UserRole;
 import com.springboot.hyll.sys.service.UserRoleService;
@@ -40,6 +41,20 @@ public class UserController extends BaseController<User> {
     @Override
     protected BaseService<User> getService() {
         return userService;
+    }
+
+    /**
+     * 功能描述：加载首页菜单节点的数据
+     * @return
+     */
+    @RequestMapping(value="/mainTree",method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public Map<String,Object> mainTree(){
+        Map<String,Object> result = new HashMap<String, Object>();
+        List<Tree> trees = UserInfo.loadUserTree();
+        result.put("data",trees);
+        result.put(SystemStaticConst.RESULT,SystemStaticConst.SUCCESS);
+        return result;
     }
 
     /**
