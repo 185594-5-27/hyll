@@ -22,12 +22,12 @@ public class MessageAssociateUser extends QueryBase implements Serializable {
     private Long id;
     // 与消息的关联关系
     @JsonIgnore
-    @ManyToOne(cascade=CascadeType.ALL)
+    @ManyToOne(cascade=CascadeType.ALL,fetch=FetchType.LAZY)
     @JoinColumn(name="message_id",nullable=true)
     private Message message;
     // 与用户的关联关系
     @JsonIgnore
-    @ManyToOne(cascade= CascadeType.ALL)
+    @ManyToOne(cascade= CascadeType.ALL,fetch=FetchType.LAZY)
     @JoinColumn(name="user_id",nullable=true)
     private User user;
     // 删除状态（0：已删除；1：未删除）

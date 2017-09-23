@@ -5,7 +5,9 @@ import com.springboot.hyll.config.common.base.entity.QueryBase;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /*
 * 类描述：消息实体类
@@ -31,9 +33,19 @@ public class Message extends QueryBase implements Serializable {
     private String imgUrl;
     // 消息状态（）
     private String state;
-
     // 删除状态（0：已删除；1：未删除）
     private String isDelete;
+
+    @OneToMany(mappedBy = "user",fetch=FetchType.LAZY)
+    private List<MessageAssociateUser> messageAssociateUserList = new ArrayList<MessageAssociateUser>();
+
+    public List<MessageAssociateUser> getMessageAssociateUserList() {
+        return messageAssociateUserList;
+    }
+
+    public void setMessageAssociateUserList(List<MessageAssociateUser> messageAssociateUserList) {
+        this.messageAssociateUserList = messageAssociateUserList;
+    }
 
     public Long getId() {
         return id;
