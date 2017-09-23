@@ -1,5 +1,6 @@
 package com.springboot.hyll.sys.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.springboot.hyll.config.common.base.entity.QueryBase;
 import com.springboot.hyll.sys.service.UserRoleService;
 import org.springframework.security.core.GrantedAuthority;
@@ -59,18 +60,28 @@ public class User extends QueryBase implements UserDetails {
     private String state;
     // 用户类型（1：后台用户；2：其他用户【可扩展】）
     private String type;
+    // 最迟登陆时间
+    private Date lastLoginDate;
 
     // 权限集合数据
     @Transient
     private String roleArray;
-
+    // 用户与组织架构的关联关系
     @ManyToOne(optional = true)
     @JoinColumn(name="group_id")
     private OrgGroup orgGroup;
-
+     // 用户与角色的关联关系
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_associate_role", joinColumns = { @JoinColumn(name ="user_id" )}, inverseJoinColumns = { @JoinColumn(name = "role_id") })
     private List<UserRole> roles;
+
+    public Date getLastLoginDate() {
+        return lastLoginDate;
+    }
+
+    public void setLastLoginDate(Date lastLoginDate) {
+        this.lastLoginDate = lastLoginDate;
+    }
 
     public String getType() {
         return type;
