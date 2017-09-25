@@ -17,17 +17,26 @@ import java.util.Date;
 public class MessageAssociateUser extends QueryBase implements Serializable {
 
     private static final long serialVersionUID = 3548073768860990988L;
+
+
+    public MessageAssociateUser(){
+        super();
+    }
+
+    public MessageAssociateUser(User user,Message message){
+        this.user = user;
+        this.message = message;
+    }
+
     @Id
     @GeneratedValue
     private Long id;
     // 与消息的关联关系
-    @JsonIgnore
-    @ManyToOne(cascade=CascadeType.ALL,fetch=FetchType.LAZY)
+    @ManyToOne(cascade=CascadeType.ALL,fetch=FetchType.EAGER)
     @JoinColumn(name="message_id",nullable=true)
     private Message message;
     // 与用户的关联关系
-    @JsonIgnore
-    @ManyToOne(cascade= CascadeType.ALL,fetch=FetchType.LAZY)
+    @ManyToOne(cascade= CascadeType.ALL,fetch=FetchType.EAGER)
     @JoinColumn(name="user_id",nullable=true)
     private User user;
     // 删除状态（0：已删除；1：未删除）

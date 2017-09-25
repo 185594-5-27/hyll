@@ -1,8 +1,6 @@
 package com.springboot.hyll.sys.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.springboot.hyll.config.common.base.entity.QueryBase;
-import com.springboot.hyll.sys.service.UserRoleService;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

@@ -36,7 +36,7 @@ public class Message extends QueryBase implements Serializable {
     // 删除状态（0：已删除；1：未删除）
     private String isDelete;
 
-    @OneToMany(mappedBy = "user",fetch=FetchType.LAZY)
+    @OneToMany(mappedBy = "message",cascade=CascadeType.ALL)
     private List<MessageAssociateUser> messageAssociateUserList = new ArrayList<MessageAssociateUser>();
 
     public List<MessageAssociateUser> getMessageAssociateUserList() {

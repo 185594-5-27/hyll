@@ -6,6 +6,8 @@ import com.springboot.hyll.sys.dao.MessageAssociateUserRepository;
 import com.springboot.hyll.sys.dao.MessageRepository;
 import com.springboot.hyll.sys.entity.Message;
 import com.springboot.hyll.sys.entity.MessageAssociateUser;
+import com.springboot.hyll.sys.entity.User;
+import com.springboot.hyll.sys.mybatis.MessageMybatis;
 import com.springboot.hyll.util.user.UserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -21,10 +23,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /*
@@ -47,14 +46,34 @@ public class PushNotificationController {
     private MessageAssociateUserRepository messageAssociateUserRepository;
     @Inject
     private MessageRepository messageRepository;
+    @Inject
+    private MessageMybatis messageMybatis;
+
+    @RequestMapping(value = "/SendMessage")
+    @ResponseBody
+    public Map<String,Object> SendMessage(){
+        Map<String,Object> result = new HashMap<String, Object>();
+        Message msg = new Message();
+        msg.setContent("123");
+        messageRepository.save(msg);
+        Message msgg = new Message();
+        msgg.setId(1l);
+        MessageAssociateUser mau = new MessageAssociateUser(new User(1),msgg);
+        messageAssociateUserRepository.save(mau);
+        messageAssociateUserRepository.save(new MessageAssociateUser(new User(2),msg));
+        messageAssociateUserRepository.save(new MessageAssociateUser(new User(9),msg));
+        return result;
+    }
 
     @RequestMapping(value = "/getUserMessage")
     @ResponseBody
     public Map<String,Object> getUserMessage(){
         Map<String,Object> result = new HashMap<String, Object>();
-        Message msg = messageRepository.findOne(1l);
+        Message msg = new Message();
+        msg.setId(1l);
         System.out.println(msg);
-       // result.put("msg",msg.getMessageAssociateUserList().get(0).getUser().getAddress());
+        msg = messageMybatis.get(msg);
+       result.put("msg",msg);
         return result;
     }
 
